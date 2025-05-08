@@ -1,5 +1,6 @@
-# Дипломный практикум в Yandex.Cloud 
-           Mikhail Kuliaev 
+# Дипломный практикум в Yandex.Cloud
+#       "Mikhail Kuliaev"
+        
 
 
   * [Цели:](#цели)
