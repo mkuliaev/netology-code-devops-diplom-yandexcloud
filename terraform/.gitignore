@@ -1,0 +1,32 @@
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+terraform.tfvars
+
+# Crash log files
+crash.log
+
+# .terraform directories
+.terraform/
+
+# Override files (if you use them)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local .terraform directories
+.terraformrc
+terraform.rc
+
+# Environment files
+.env
+
+key.json
+
+backend.hcl
+backend.hcl
+*.hcl
+*.tfvars
