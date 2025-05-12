@@ -125,6 +125,49 @@ data "yandex_compute_image" "ubuntu" {
   family = "ubuntu-2004-lts"
 }
 
+# Добовляем Network Load Balancer
+# Целевая группа для рабочих узлов
+resource "yandex_lb_target_group" "workers" {
+  name = "workers-target-group"
+
+  dynamic "target" {
+    for_each = yandex_compute_instance.worker
+    content {
+      subnet_id = target.value.network_interface[0].subnet_id
+      address   = target.value.network_interface[0].ip_address
+    }
+  }
+}
+
+# Сетевой балансировщик нагрузки
+resource "yandex_lb_network_load_balancer" "my_balancer" {
+  name = "mkuliaev-network-lb"
+
+  listener {
+    name = "http-listener"
+    port = 80
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.workers.id
+
+    healthcheck {
+      name = "http-healthcheck"
+      http_options {
+        port = 80
+        path = "/"
+      }
+      interval            = 2
+      timeout             = 1
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
+    }
+  }
+}
+
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
 }
@@ -133,6 +176,12 @@ output "worker_public_ips" {
   value = yandex_compute_instance.worker[*].network_interface.0.nat_ip_address
 }
 
+output "load_balancer_public_ip" {
+  value = [
+    for listener in yandex_lb_network_load_balancer.my_balancer.listener :
+    tolist(listener.external_address_spec)[0].address
+  ]
+}
 
 
 

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: default
+spec:
+  type: LoadBalancer
+#  loadBalancerIP: 84.201.128.29
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
