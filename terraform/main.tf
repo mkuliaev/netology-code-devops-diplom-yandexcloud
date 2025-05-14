@@ -168,6 +168,7 @@ resource "yandex_lb_network_load_balancer" "my_balancer" {
   }
 }
 
+
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
 }
