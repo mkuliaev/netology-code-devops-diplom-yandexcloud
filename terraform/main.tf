@@ -6,15 +6,16 @@ terraform {
     }
   }
 
-#  backend "s3" {
-#    bucket   = "kuliaev-bucket"
-#    key      = "terraform.tfstate"
-#    region   = "ru-central1"
-#    endpoint = "storage.yandexcloud.net"
-##    access_key = var.access_key
-##    secret_key = var.secret_key
-#    access_key = ""
-#    secret_key = ""
+# backend "s3" {
+#   bucket   = "kuliaev-bucket"
+#   key      = "terraform.tfstate"
+#   region   = "ru-central1"
+#   endpoint = "storage.yandexcloud.net"
+#   access_key = var.s3_access_key
+#   secret_key = var.s3_secret_key
+  
+#    access_key = "backend.hcl"
+#    secret_key = "backend.hcl"
 #
 #    skip_region_validation      = true
 #    skip_credentials_validation = true
@@ -34,7 +35,7 @@ provider "yandex" {
 #}
 # Создание VPC сети
 resource "yandex_vpc_network" "network" {
-  name = "kuliaev-network"                   # <- поаправить на mkuliaev
+  name = "mkuliaev-network"                   # <- поаправить на mkuliaev
 }
 
 # Подсеть в зоне ru-central1-a
@@ -60,6 +61,11 @@ resource "yandex_vpc_subnet" "subnet_d" {
   network_id     = yandex_vpc_network.network.id
   v4_cidr_blocks = ["10.0.2.0/24"]
 }
+
+data "yandex_compute_image" "ubuntu" {
+  family = "ubuntu-2004-lts"
+}
+
 # Мастер-узел
 resource "yandex_compute_instance" "master" {
   name        = "mkuliaev-master"
@@ -79,7 +85,7 @@ resource "yandex_compute_instance" "master" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet_d.id  # Используем подсеть в зоне d
+    subnet_id = yandex_vpc_subnet.subnet_d.id  #  подсеть в зоне d
     nat       = true
   }
 
@@ -88,15 +94,15 @@ resource "yandex_compute_instance" "master" {
   }
 }
 
-# Рабочие узлы
+# Воркеры
 resource "yandex_compute_instance" "worker" {
   count       = 2
-  name        = "mkuliaev-worker-${count.index}"
+  name        = "mkuliaev-worker-${count.index + 1}"
   platform_id = "standard-v2"
   zone        = count.index == 0 ? "ru-central1-a" : "ru-central1-b"  # Чередуем зоны a и b
 
   scheduling_policy {
-    preemptible = true
+    preemptible = false
   }
 
   resources {
@@ -121,14 +127,55 @@ resource "yandex_compute_instance" "worker" {
   }
 }
 
-data "yandex_compute_image" "ubuntu" {
-  family = "ubuntu-2004-lts"
-}
+#data "yandex_compute_image" "ubuntu" {
+#  family = "ubuntu-2204-lts"
+#}
 
 # Добовляем Network Load Balancer
-# Целевая группа для рабочих узлов
-resource "yandex_lb_target_group" "workers" {
-  name = "workers-target-group"
+
+# ХА мастер
+resource "yandex_lb_target_group" "kubectl_masters" {
+  name = "masters-tg"
+
+  target {
+    subnet_id = yandex_vpc_subnet.subnet_d.id
+    address   = yandex_compute_instance.master.network_interface[0].ip_address
+  }
+}
+
+resource "yandex_lb_network_load_balancer" "kubectl_lb" {
+  name = "mkuliaev-kubectl-lb"
+
+  # Listener на порту 6443
+  listener {
+    name = "kubectl-listener"
+    port = 6443
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.kubectl_masters.id
+    healthcheck {
+      name = "kubectl-hc"
+      tcp_options {
+        port = 6443
+      }
+      interval            = 3
+      timeout             = 1
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
+    }
+  }
+}
+ 
+
+
+
+# хттп воркер
+resource "yandex_lb_target_group" "http_workers" {
+  name = "workers-tg"
 
   dynamic "target" {
     for_each = yandex_compute_instance.worker
@@ -139,9 +186,8 @@ resource "yandex_lb_target_group" "workers" {
   }
 }
 
-# Сетевой балансировщик нагрузки
-resource "yandex_lb_network_load_balancer" "my_balancer" {
-  name = "mkuliaev-network-lb"
+resource "yandex_lb_network_load_balancer" "http_lb" {
+  name = "mkuliaev-http-lb"
 
   listener {
     name = "http-listener"
@@ -152,22 +198,20 @@ resource "yandex_lb_network_load_balancer" "my_balancer" {
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.workers.id
-
+    target_group_id = yandex_lb_target_group.http_workers.id
     healthcheck {
-      name = "http-healthcheck"
+      name = "http-hc"
       http_options {
         port = 80
         path = "/"
       }
-      interval            = 2
+      interval            = 3
       timeout             = 1
       healthy_threshold   = 2
       unhealthy_threshold = 2
     }
   }
 }
-
 
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
@@ -177,15 +221,17 @@ output "worker_public_ips" {
   value = yandex_compute_instance.worker[*].network_interface.0.nat_ip_address
 }
 
-output "load_balancer_public_ip" {
-  value = [
-    for listener in yandex_lb_network_load_balancer.my_balancer.listener :
-    tolist(listener.external_address_spec)[0].address
-  ]
+#output "kubectl_load_balancer_ip" {
+#  value = yandex_lb_network_load_balancer.kubectl_lb.listener[0].external_address_spec[0].address
+#}
+
+#output "http_load_balancer_ip" {
+#  value = yandex_lb_network_load_balancer.http_lb.listener[0].external_address_spec[0].address
+#}
+output "kubectl_load_balancer_ip" {
+  value = one(yandex_lb_network_load_balancer.kubectl_lb.listener[*].external_address_spec[*].address)
 }
 
-
-
-
-
-
+output "http_load_balancer_ip" {
+  value = one(yandex_lb_network_load_balancer.http_lb.listener[*].external_address_spec[*].address)
+}
