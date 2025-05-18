@@ -31,7 +31,7 @@ variable "secret_key" {
 variable "ssh_user" {
   description = "SSH user name"
   type        = string
-  default     = "kuliaev"
+  default     = "ubuntu"
 }
 
 variable "public_key_path" {
