@@ -136,26 +136,27 @@ resource "yandex_compute_instance" "worker" {
 # ХА мастер
 # Целевая группа для Grafana 
 resource "yandex_lb_target_group" "shared_workers" {
-  name = "shared-workers-tg"
+  name = "mkuliaev-shared-workers-tg"
 
   dynamic "target" {
     for_each = yandex_compute_instance.worker
     content {
       subnet_id = target.value.network_interface[0].subnet_id
       address   = target.value.network_interface[0].ip_address
+
     }
   }
 }
-
 # grafana LB
+## Графана LB (только один блок)
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
-  name = "mkuliaev-grafana-lb"
+  name = "mkuliaev-grafana-nlb"
 
   listener {
     name = "grafana-listener"
     port = 3000
     external_address_spec {
-      ip_version = "ipv4" 
+      ip_version = "ipv4"
     }
   }
 
@@ -175,15 +176,17 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
   }
 }
 
-# Web App Load Balancer
+# Веб-приложение LB (только один блок)
 resource "yandex_lb_network_load_balancer" "web_app_lb" {
-  name = "mkuliaev-web-app-lb"
+  depends_on = [yandex_lb_network_load_balancer.grafana_lb] # Добавьте зависимость, если нужно
+
+  name = "mkuliaev-web-app-nlb"
 
   listener {
     name = "web-app-listener"
     port = 80
     external_address_spec {
-      ip_version = "ipv4" # Автоматический выбор IP
+      ip_version = "ipv4"
     }
   }
 
@@ -202,19 +205,6 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
     }
   }
 }
-
-
-resource "yandex_vpc_address" "cleanup" {
-  count = 0 # Ресурс будет только удаляться
-  name = "dummy-address"
-  external_ipv4_address {
-    zone_id = "ru-central1-a"
-  }
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
 }
@@ -237,7 +227,7 @@ output "worker_public_ips" {
 output "grafana_lb_ip" {
   value = one(yandex_lb_network_load_balancer.grafana_lb.listener[*].external_address_spec[*].address)
 }
-
 output "web_app_lb_ip" {
   value = one(yandex_lb_network_load_balancer.web_app_lb.listener[*].external_address_spec[*].address)
 }
+
