@@ -131,16 +131,10 @@ resource "yandex_compute_instance" "worker" {
 #  family = "ubuntu-2204-lts"
 #}
 
-# Добовляем Network Load Balancer
-resource "yandex_vpc_address" "cluster_static_ip" {
-  name = "cluster-static-ip"
-  external_ipv4_address {
-    zone_id = "ru-central1-d" # Укажите правильную зону
-  }
-}
+# Добовляем Network Load 
 
 # ХА мастер
-# Целевая группа для Grafana (порт 30050 на воркерах)
+# Целевая группа для Grafana 
 resource "yandex_lb_target_group" "shared_workers" {
   name = "shared-workers-tg"
 
@@ -153,7 +147,7 @@ resource "yandex_lb_target_group" "shared_workers" {
   }
 }
 
-# Балансировщик Grafana
+# grafana LB
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
   name = "mkuliaev-grafana-lb"
 
@@ -161,8 +155,7 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
     name = "grafana-listener"
     port = 3000
     external_address_spec {
-      address    = yandex_vpc_address.cluster_static_ip.external_ipv4_address[0].address
-      ip_version = "ipv4"
+      ip_version = "ipv4" 
     }
   }
 
@@ -174,11 +167,15 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
         port = 30085
         path = "/"
       }
+      interval            = 3
+      timeout             = 1
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
     }
   }
 }
 
-# Балансировщик Web App
+# Web App Load Balancer
 resource "yandex_lb_network_load_balancer" "web_app_lb" {
   name = "mkuliaev-web-app-lb"
 
@@ -186,7 +183,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
     name = "web-app-listener"
     port = 80
     external_address_spec {
-      ip_version = "ipv4"
+      ip_version = "ipv4" # Автоматический выбор IP
     }
   }
 
@@ -198,9 +195,26 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
         port = 8085
         path = "/"
       }
+      interval            = 3
+      timeout             = 1
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
     }
   }
 }
+
+
+resource "yandex_vpc_address" "cleanup" {
+  count = 0 # Ресурс будет только удаляться
+  name = "dummy-address"
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
 }
@@ -209,15 +223,9 @@ output "worker_public_ips" {
   value = yandex_compute_instance.worker[*].network_interface.0.nat_ip_address
 }
 
-#output "kubectl_load_balancer_ip" {
-#  value = yandex_lb_network_load_balancer.kubectl_lb.listener[0].external_address_spec[0].address
-#}
 
 #output "http_load_balancer_ip" {
 #  value = yandex_lb_network_load_balancer.http_lb.listener[0].external_address_spec[0].address
-#}
-#output "kubectl_load_balancer_ip" {
-#  value = one(yandex_lb_network_load_balancer.kubectl_lb.listener[*].external_address_spec[*].address)
 #}
 
 #output "http_load_balancer_ip" {
@@ -226,10 +234,10 @@ output "worker_public_ips" {
 
 
 # Обновляем выводы
-output "grafana_load_balancer_ip" {
+output "grafana_lb_ip" {
   value = one(yandex_lb_network_load_balancer.grafana_lb.listener[*].external_address_spec[*].address)
 }
 
-output "web_app_load_balancer_ip" {
+output "web_app_lb_ip" {
   value = one(yandex_lb_network_load_balancer.web_app_lb.listener[*].external_address_spec[*].address)
 }
