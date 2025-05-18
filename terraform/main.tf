@@ -171,7 +171,7 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
     healthcheck {
       name = "grafana-hc"
       http_options {
-        port = 85300
+        port = 30085
         path = "/"
       }
     }
@@ -195,7 +195,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
     healthcheck {
       name = "web-app-hc"
       http_options {
-        port = 8580
+        port = 8085
         path = "/"
       }
     }
