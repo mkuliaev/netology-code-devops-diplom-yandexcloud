@@ -10,4 +10,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      nodeport: 30885
+      NodePort: 30885
