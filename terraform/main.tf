@@ -195,7 +195,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
     healthcheck {
       name = "web-app-hc"
       http_options {
-        port = 8085
+        port = 30885
         path = "/"
       }
       interval            = 3
