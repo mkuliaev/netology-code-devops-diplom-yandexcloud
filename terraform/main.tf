@@ -132,50 +132,17 @@ resource "yandex_compute_instance" "worker" {
 #}
 
 # Добовляем Network Load Balancer
+resource "yandex_vpc_address" "cluster_static_ip" {
+  name = "cluster-static-ip"
+  external_ipv4_address {
+    zone_id = "ru-central1-d" # Укажите правильную зону
+  }
+}
 
 # ХА мастер
-resource "yandex_lb_target_group" "kubectl_masters" {
-  name = "masters-tg"
-
-  target {
-    subnet_id = yandex_vpc_subnet.subnet_d.id
-    address   = yandex_compute_instance.master.network_interface[0].ip_address
-  }
-}
-
-resource "yandex_lb_network_load_balancer" "kubectl_lb" {
-  name = "mkuliaev-kubectl-lb"
-
-  # Listener на порту 6443
-  listener {
-    name = "kubectl-listener"
-    port = 6443
-    external_address_spec {
-      ip_version = "ipv4"
-    }
-  }
-
-  attached_target_group {
-    target_group_id = yandex_lb_target_group.kubectl_masters.id
-    healthcheck {
-      name = "kubectl-hc"
-      tcp_options {
-        port = 6443
-      }
-      interval            = 3
-      timeout             = 1
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
-    }
-  }
-}
- 
-
-
-
-# хттп воркер
-resource "yandex_lb_target_group" "http_workers" {
-  name = "workers-tg"
+# Целевая группа для Grafana (порт 30050 на воркерах)
+resource "yandex_lb_target_group" "shared_workers" {
+  name = "shared-workers-tg"
 
   dynamic "target" {
     for_each = yandex_compute_instance.worker
@@ -186,11 +153,37 @@ resource "yandex_lb_target_group" "http_workers" {
   }
 }
 
-resource "yandex_lb_network_load_balancer" "http_lb" {
-  name = "mkuliaev-http-lb"
+# Балансировщик Grafana
+resource "yandex_lb_network_load_balancer" "grafana_lb" {
+  name = "mkuliaev-grafana-lb"
 
   listener {
-    name = "http-listener"
+    name = "grafana-listener"
+    port = 3000
+    external_address_spec {
+      address    = yandex_vpc_address.cluster_static_ip.external_ipv4_address[0].address
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.shared_workers.id
+    healthcheck {
+      name = "grafana-hc"
+      http_options {
+        port = 85300
+        path = "/"
+      }
+    }
+  }
+}
+
+# Балансировщик Web App
+resource "yandex_lb_network_load_balancer" "web_app_lb" {
+  name = "mkuliaev-web-app-lb"
+
+  listener {
+    name = "web-app-listener"
     port = 80
     external_address_spec {
       ip_version = "ipv4"
@@ -198,21 +191,16 @@ resource "yandex_lb_network_load_balancer" "http_lb" {
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.http_workers.id
+    target_group_id = yandex_lb_target_group.shared_workers.id
     healthcheck {
-      name = "http-hc"
+      name = "web-app-hc"
       http_options {
-        port = 80
+        port = 8580
         path = "/"
       }
-      interval            = 3
-      timeout             = 1
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
     }
   }
 }
-
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
 }
@@ -228,10 +216,20 @@ output "worker_public_ips" {
 #output "http_load_balancer_ip" {
 #  value = yandex_lb_network_load_balancer.http_lb.listener[0].external_address_spec[0].address
 #}
-output "kubectl_load_balancer_ip" {
-  value = one(yandex_lb_network_load_balancer.kubectl_lb.listener[*].external_address_spec[*].address)
+#output "kubectl_load_balancer_ip" {
+#  value = one(yandex_lb_network_load_balancer.kubectl_lb.listener[*].external_address_spec[*].address)
+#}
+
+#output "http_load_balancer_ip" {
+#  value = one(yandex_lb_network_load_balancer.http_lb.listener[*].external_address_spec[*].address)
+#}
+
+
+# Обновляем выводы
+output "grafana_load_balancer_ip" {
+  value = one(yandex_lb_network_load_balancer.grafana_lb.listener[*].external_address_spec[*].address)
 }
 
-output "http_load_balancer_ip" {
-  value = one(yandex_lb_network_load_balancer.http_lb.listener[*].external_address_spec[*].address)
+output "web_app_load_balancer_ip" {
+  value = one(yandex_lb_network_load_balancer.web_app_lb.listener[*].external_address_spec[*].address)
 }
