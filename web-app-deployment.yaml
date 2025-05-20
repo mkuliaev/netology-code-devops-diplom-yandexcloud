@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kuliaev-diplom.ru
-  namespace: kuliaev-diplom
+  namespace: default
   labels:
     app: web-app
 spec:
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: kuliaev-diplom-nginx
-          image:  mkuliaev/my-nginx-app:0.0.1
+          image:  mkuliaev/my-nginx-app:latest
           resources:
              requests:
                 cpu: "1"

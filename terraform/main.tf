@@ -204,8 +204,10 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
   name = "mkuliaev-web-app-nlb"
 
   listener {
-    name = "web-app-listener"
-    port = 80
+    name        = "web-app-listener"
+    port        = 80        # внешний порт на NLB
+    target_port = 30080     # порт NodePort на воркерах
+
     external_address_spec {
       address    = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
       ip_version = "ipv4"
@@ -213,16 +215,18 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.web_workers.id # Используем новую группу
+    target_group_id = yandex_lb_target_group.web_workers.id
+
     healthcheck {
       name = "web-app-hc"
       http_options {
-        port = 80
+        port = 30080
         path = "/"
       }
     }
   }
 }
+
 # Вывод IP-адресов балансировщиков
 output "grafana_lb_ip" {
   value = yandex_vpc_address.grafana_ip.external_ipv4_address[0].address
