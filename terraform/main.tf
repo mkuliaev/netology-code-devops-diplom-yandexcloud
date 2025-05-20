@@ -96,12 +96,12 @@ resource "yandex_compute_instance" "master" {
 
 # Воркеры
 resource "yandex_compute_instance" "worker" {
-  count       = 2
+  count       = 4
   name        = "mkuliaev-worker-${count.index + 1}"
   platform_id = "standard-v2"
-  zone        = count.index == 0 ? "ru-central1-a" : "ru-central1-b"  # Чередуем зоны a и b
-
-  scheduling_policy {
+  zone        = count.index == 0 ? "ru-central1-a" : "ru-central1-b" 
+ 
+    scheduling_policy {
     preemptible = false
   }
 
@@ -132,78 +132,104 @@ resource "yandex_compute_instance" "worker" {
 #}
 
 # Добовляем Network Load 
+# Создаем статические IP-адреса
+resource "yandex_vpc_address" "grafana_ip" {
+  name = "grafana-lb-ip"
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
+}
 
-# ХА мастер
-# Целевая группа для Grafana 
-resource "yandex_lb_target_group" "shared_workers" {
-  name = "mkuliaev-shared-workers-tg"
+resource "yandex_vpc_address" "web_app_ip" {
+  name = "web-app-lb-ip"
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
+}
+
+# Целевая группа для Grafana (воркеры 1 и 2)
+resource "yandex_lb_target_group" "grafana_workers" {
+  name = "mkuliaev-grafana-workers-tg"
 
   dynamic "target" {
-    for_each = yandex_compute_instance.worker
+    for_each = slice(yandex_compute_instance.worker, 0, 2) # Берем первые 2 воркера
     content {
       subnet_id = target.value.network_interface[0].subnet_id
       address   = target.value.network_interface[0].ip_address
-
     }
   }
 }
-# grafana LB
-## Графана LB (только один блок)
+
+# Целевая группа для Web App (воркеры 3 и 4)
+resource "yandex_lb_target_group" "web_workers" {
+  name = "mkuliaev-web-workers-tg"
+
+  dynamic "target" {
+    for_each = slice(yandex_compute_instance.worker, 2, 4) # Берем последние 2 воркера
+    content {
+      subnet_id = target.value.network_interface[0].subnet_id
+      address   = target.value.network_interface[0].ip_address
+    }
+  }
+}
+# Обновите балансировщики использовать разные целевые группы
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
   name = "mkuliaev-grafana-nlb"
 
   listener {
-    name = "grafana-listener"
-    port = 3000
+    name        = "grafana-listener"
+    port        = 80        # внешний — 80
+    target_port = 30080     # NodePort Grafana
+
     external_address_spec {
+      address    = yandex_vpc_address.grafana_ip.external_ipv4_address[0].address
       ip_version = "ipv4"
     }
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.shared_workers.id
+    target_group_id = yandex_lb_target_group.grafana_workers.id
+
     healthcheck {
       name = "grafana-hc"
       http_options {
-        port = 30085
-        path = "/"
+        port = 30080
+        path = "/api/health"
       }
-      interval            = 3
-      timeout             = 1
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
     }
   }
 }
 
-# Веб-приложение LB (только один блок)
 resource "yandex_lb_network_load_balancer" "web_app_lb" {
-  depends_on = [yandex_lb_network_load_balancer.grafana_lb] # Добавьте зависимость, если нужно
-
   name = "mkuliaev-web-app-nlb"
 
   listener {
     name = "web-app-listener"
     port = 80
     external_address_spec {
+      address    = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
       ip_version = "ipv4"
     }
   }
 
   attached_target_group {
-    target_group_id = yandex_lb_target_group.shared_workers.id
+    target_group_id = yandex_lb_target_group.web_workers.id # Используем новую группу
     healthcheck {
       name = "web-app-hc"
       http_options {
-        port = 30885
+        port = 80
         path = "/"
       }
-      interval            = 3
-      timeout             = 1
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
     }
   }
+}
+# Вывод IP-адресов балансировщиков
+output "grafana_lb_ip" {
+  value = yandex_vpc_address.grafana_ip.external_ipv4_address[0].address
+}
+
+output "web_app_lb_ip" {
+  value = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
 }
 output "master_public_ip" {
   value = yandex_compute_instance.master.network_interface.0.nat_ip_address
@@ -222,12 +248,4 @@ output "worker_public_ips" {
 #  value = one(yandex_lb_network_load_balancer.http_lb.listener[*].external_address_spec[*].address)
 #}
 
-
-# Обновляем выводы
-output "grafana_lb_ip" {
-  value = one(yandex_lb_network_load_balancer.grafana_lb.listener[*].external_address_spec[*].address)
-}
-output "web_app_lb_ip" {
-  value = one(yandex_lb_network_load_balancer.web_app_lb.listener[*].external_address_spec[*].address)
-}
 
