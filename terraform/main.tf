@@ -206,7 +206,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
   listener {
     name        = "web-app-listener"
     port        = 80        # внешний порт на NLB
-    target_port = 30080     # порт NodePort на воркерах
+    target_port = 30081     # порт NodePort на воркерах
 
     external_address_spec {
       address    = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
@@ -220,7 +220,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
     healthcheck {
       name = "web-app-hc"
       http_options {
-        port = 30080
+        port = 30081
         path = "/"
       }
     }
