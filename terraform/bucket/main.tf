@@ -65,7 +65,7 @@ resource "yandex_storage_object" "terraform_tfvars" {
   provider = yandex.storage
   bucket   = yandex_storage_bucket.diplom_bucket.bucket
   key      = "terraform.tfvars"          
-  source   = "./terraform.tfvars"        
+  source   = "./image.jpg"        
   acl      = "private"                    
 }
 

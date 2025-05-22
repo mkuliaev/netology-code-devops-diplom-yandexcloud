@@ -32,17 +32,26 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
 
     - uses: hashicorp/setup-terraform@v3
-      with: { terraform_version: "1.8.0" }
+      with: 
+        terraform_version: "1.8.0"
 
-    - run: terraform -chdir=terraform/bucket init
-    - run: terraform -chdir=terraform/bucket fmt -check
-    - run: terraform -chdir=terraform/bucket validate
-    - run: terraform -chdir=terraform/bucket plan -input=false -out=tfplan
+    - name: Terraform Init
+      run: terraform -chdir=terraform/bucket init
+
+    - name: Terraform Format
+      run: terraform -chdir=terraform/bucket fmt -check
+
+    - name: Terraform Validate
+      run: terraform -chdir=terraform/bucket validate
+
+    - name: Terraform Plan
+      run: terraform -chdir=terraform/bucket plan -input=false -out=tfplan
 
     - uses: actions/upload-artifact@v4
       with:
         name: tfplan
         path: terraform/bucket/tfplan
 
-    - if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
+    - name: Terraform Apply
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
       run: terraform -chdir=terraform/bucket apply -input=false tfplan
