@@ -55,7 +55,7 @@ jobs:
       run: terraform -chdir=./files/terraform plan -input=false -out=tfplan
 
     - name: Upload Plan Artifact
-      uses: actions/upload-artifact@v4 
+      uses: actions/upload-artifact@v4.5.2
       with:
         name: tfplan
         path: files/terraform/tfplan
