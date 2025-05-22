@@ -131,7 +131,7 @@ resource "yandex_compute_instance" "worker" {
 #  family = "ubuntu-2204-lts"
 #}
 
-# Добовляем Network Load 
+#Network Load 
 # Создаем статические IP-адреса
 resource "yandex_vpc_address" "grafana_ip" {
   name = "grafana-lb-ip"
@@ -147,7 +147,7 @@ resource "yandex_vpc_address" "web_app_ip" {
   }
 }
 
-# Целевая группа для Grafana (воркеры 1 и 2)
+# ЦГ для Grafana (воркеры 1 и 2)
 resource "yandex_lb_target_group" "grafana_workers" {
   name = "mkuliaev-grafana-workers-tg"
 
@@ -160,7 +160,7 @@ resource "yandex_lb_target_group" "grafana_workers" {
   }
 }
 
-# Целевая группа для Web App (воркеры 3 и 4)
+# ЦГ для Web App (воркеры 3 и 4)
 resource "yandex_lb_target_group" "web_workers" {
   name = "mkuliaev-web-workers-tg"
 
@@ -172,7 +172,7 @@ resource "yandex_lb_target_group" "web_workers" {
     }
   }
 }
-# Обновите балансировщики использовать разные целевые группы
+#  балансировщики разные целевые группы
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
   name = "mkuliaev-grafana-nlb"
 
@@ -205,8 +205,8 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
 
   listener {
     name        = "web-app-listener"
-    port        = 80        # внешний порт на NLB
-    target_port = 30081     # порт NodePort на воркерах
+    port        = 80        
+    target_port = 30081    
 
     external_address_spec {
       address    = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
