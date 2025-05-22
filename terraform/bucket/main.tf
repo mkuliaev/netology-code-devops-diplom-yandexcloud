@@ -16,7 +16,7 @@ provider "yandex" {
 # Создание сервисного аккаунта kuliaev-diplom
 resource "yandex_iam_service_account" "kuliaev_diplom" {
   name        = "kuliaev-diplom"
-  description = "Service account for diploma project"
+  description = "account for diploma"
 }
 
 # Назначение роли storage.editor
@@ -35,21 +35,45 @@ resource "yandex_iam_service_account_static_access_key" "sa_key" {
 }
 
 # Отдельный провайдер для Object Storage с использованием созданных ключей
+#provider "yandex" {
+#  alias               = "storage"
+#  token               = var.yc_token
+#  cloud_id           = var.yc_cloud_id
+#  folder_id          = var.yc_folder_id
+#  storage_access_key = yandex_iam_service_account_static_access_key.sa_key.access_key
+#  storage_secret_key = yandex_iam_service_account_static_access_key.sa_key.secret_key
+#}
+
 provider "yandex" {
   alias               = "storage"
   token               = var.yc_token
-  cloud_id           = var.yc_cloud_id
-  folder_id          = var.yc_folder_id
-  storage_access_key = yandex_iam_service_account_static_access_key.sa_key.access_key
-  storage_secret_key = yandex_iam_service_account_static_access_key.sa_key.secret_key
+  cloud_id            = var.yc_cloud_id
+  folder_id           = var.yc_folder_id
+  storage_access_key  = var.s3_access_key
+  storage_secret_key  = var.s3_secret_key
 }
 
 # Создание S3 бакета
+#resource "yandex_storage_bucket" "diplom_bucket" {
+#  provider = yandex.storage
+#  bucket   = "kuliaev-diplom-bucket"
+#  acl      = "private"
+
+#  anonymous_access_flags {
+#    read = false
+#    list = false
+#  }
+
+#  versioning {
+#    enabled = true
+#  }
+#}
+
 resource "yandex_storage_bucket" "diplom_bucket" {
   provider = yandex.storage
-  bucket   = "kuliaev-diplom-bucket"
+  bucket   = "kuliaev-bucket-diplom"  
   acl      = "private"
-
+#  region   = "ru-central1" 
   anonymous_access_flags {
     read = false
     list = false
@@ -76,5 +100,5 @@ output "secret_key" {
 }
 
 output "bucket_name" {
-  value = yandex_storage_bucket.diplom_bucket.bucket
+ value = yandex_storage_bucket.diplom_bucket.bucket
 }
