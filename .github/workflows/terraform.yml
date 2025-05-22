@@ -2,10 +2,10 @@ name: Terraform infra
 on:
   push:
     branches: [main]
-    paths: ['terraform/**']
+    paths: ['terraform/bucket/**']
   pull_request:
     branches: [main]
-    paths: ['terraform/**']
+    paths: ['terraform/bucket/**']
   workflow_dispatch:
     inputs:
       apply:
@@ -32,17 +32,17 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
 
     - uses: hashicorp/setup-terraform@v3
-      with: { terraform_version: 1.8.0 }
+      with: { terraform_version: "1.8.0" }
 
-    - run: terraform -chdir=terraform init
-    - run: terraform -chdir=terraform fmt -check
-    - run: terraform -chdir=terraform validate
-    - run: terraform -chdir=terraform plan -input=false -out=tfplan
+    - run: terraform -chdir=terraform/bucket init
+    - run: terraform -chdir=terraform/bucket fmt -check
+    - run: terraform -chdir=terraform/bucket validate
+    - run: terraform -chdir=terraform/bucket plan -input=false -out=tfplan
 
     - uses: actions/upload-artifact@v4
       with:
         name: tfplan
-        path: terraform/tfplan
+        path: terraform/bucket/tfplan
 
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
-      run: terraform -chdir=terraform apply -input=false tfplan
+      run: terraform -chdir=terraform/bucket apply -input=false tfplan
