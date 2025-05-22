@@ -1,12 +1,11 @@
-name: 'Terraform infrastructure'
-
+name: Terraform infra
 on:
   push:
     branches: [main]
-    paths: ['files/terraform/**']
+    paths: ['terraform/**']
   pull_request:
     branches: [main]
-    paths: ['files/terraform/**']
+    paths: ['terraform/**']
   workflow_dispatch:
     inputs:
       apply:
@@ -16,20 +15,15 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
-
     env:
-      TF_VAR_token: ${{ secrets.YC_TOKEN }}
-      TF_VAR_cloud_id: ${{ secrets.YC_CLOUD_ID }}
+      TF_VAR_token:     ${{ secrets.YC_TOKEN }}
+      TF_VAR_cloud_id:  ${{ secrets.YC_CLOUD_ID }}
       TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
       TF_VAR_ssh_public: ${{ secrets.SSH_PUBLIC }}
-     
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Setup SSH
       run: |
@@ -37,29 +31,18 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v4
-      with:
-        terraform_version: "1.8.0"
+    - uses: hashicorp/setup-terraform@v3
+      with: { terraform_version: 1.8.0 }
 
-    - name: Terraform Init
-      run: terraform -chdir=./files/terraform init
+    - run: terraform -chdir=terraform init
+    - run: terraform -chdir=terraform fmt -check
+    - run: terraform -chdir=terraform validate
+    - run: terraform -chdir=terraform plan -input=false -out=tfplan
 
-    - name: Terraform Format Check
-      run: terraform -chdir=./files/terraform fmt -check
-
-    - name: Terraform Validate
-      run: terraform -chdir=./files/terraform validate
-
-    - name: Terraform Plan
-      run: terraform -chdir=./files/terraform plan -input=false -out=tfplan
-
-    - name: Upload Plan Artifact
-      uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v4
       with:
         name: tfplan
-        path: files/terraform/tfplan
+        path: terraform/tfplan
 
-    - name: Terraform Apply
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
-      run: terraform -chdir=./files/terraform apply -input=false tfplan
+    - if: github.event_name == 'workflow_dispatch' && github.event.inputs.apply == 'true'
+      run: terraform -chdir=terraform apply -input=false tfplan
