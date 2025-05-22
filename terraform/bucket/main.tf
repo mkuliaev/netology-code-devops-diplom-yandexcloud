@@ -47,7 +47,7 @@ provider "yandex" {
 # Создание S3 бакета
 resource "yandex_storage_bucket" "diplom_bucket" {
   provider = yandex.storage
-  bucket   = "kuliaev-diplom-bucket"
+  bucket   = "kuliaev-diplom"
   acl      = "private"
 
   anonymous_access_flags {
@@ -58,6 +58,15 @@ resource "yandex_storage_bucket" "diplom_bucket" {
   versioning {
     enabled = true
   }
+}
+
+# грузим объект в бакете
+resource "yandex_storage_object" "terraform_tfvars" {
+  provider = yandex.storage
+  bucket   = yandex_storage_bucket.diplom_bucket.bucket
+  key      = "terraform.tfvars"          
+  source   = "./terraform.tfvars"        
+  acl      = "private"                    
 }
 
 # Outputs

@@ -6,22 +6,20 @@ terraform {
     }
   }
 
- backend "s3" {
-   bucket   = "kuliaev-bucket"
-   key      = "terraform.tfstate"
-   region   = "ru-central1"
-   endpoint = "storage.yandexcloud.net"
-   access_key = var.s3_access_key
-   secret_key = var.s3_secret_key
+#  backend "s3" {
+#  endpoint = "https://storage.yandexcloud.net"
+#  bucket     = "kuliaev-diplom"
+#  key        = "terraform.tfstate"
+#  region     = "ru-central1"
   
-#    access_key = "backend.hcl"
-#    secret_key = "backend.hcl"
-#
-    skip_region_validation      = true
-    skip_credentials_validation = true
-  }
+#  access_key = ""  # backend.hcl
+#  secret_key = ""
+  
+#  skip_region_validation      = true
+#  skip_credentials_validation = true
+  
+#    }
 }
-
 provider "yandex" {
   token     = var.yc_token
   cloud_id  = var.yc_cloud_id
