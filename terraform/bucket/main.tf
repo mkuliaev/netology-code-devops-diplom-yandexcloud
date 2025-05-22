@@ -23,7 +23,7 @@ resource "yandex_iam_service_account" "kuliaev_diplom" {
 resource "yandex_resourcemanager_folder_iam_binding" "storage_admin" {
   folder_id = var.yc_folder_id
   role      = "storage.admin"
-  members   = [
+  members = [
     "serviceAccount:${yandex_iam_service_account.kuliaev_diplom.id}"
   ]
 }
@@ -36,8 +36,8 @@ resource "yandex_iam_service_account_static_access_key" "sa_key" {
 
 # Отдельный провайдер для Object Storage с использованием созданных ключей
 provider "yandex" {
-  alias               = "storage"
-  token               = var.yc_token
+  alias              = "storage"
+  token              = var.yc_token
   cloud_id           = var.yc_cloud_id
   folder_id          = var.yc_folder_id
   storage_access_key = yandex_iam_service_account_static_access_key.sa_key.access_key
@@ -64,9 +64,9 @@ resource "yandex_storage_bucket" "diplom_bucket" {
 resource "yandex_storage_object" "terraform_tfvars" {
   provider = yandex.storage
   bucket   = yandex_storage_bucket.diplom_bucket.bucket
-  key      = "terraform.tfvars"          
-  source   = "./image.jpg"        
-  acl      = "private"                    
+  key      = "terraform.tfvars"
+  source   = "./image.jpg"
+  acl      = "private"
 }
 
 # Outputs
