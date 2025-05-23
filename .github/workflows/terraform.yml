@@ -1,4 +1,4 @@
-name: Terraform infra
+#name: Terraform infra
 on:
   push:
     branches: [main]
