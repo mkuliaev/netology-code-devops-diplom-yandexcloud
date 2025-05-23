@@ -61,8 +61,12 @@ resource "yandex_vpc_subnet" "subnet_d" {
 }
 
 data "yandex_compute_image" "ubuntu" {
-  family = "ubuntu-2004-lts"
+  family = "ubuntu-2204-lts"
 }
+
+#data "yandex_compute_image" "ubuntu" {
+#  family = "ubuntu-2004-lts"  # <- похоже для РФ отключили репы 
+#}
 
 # Мастер-узел
 resource "yandex_compute_instance" "master" {
