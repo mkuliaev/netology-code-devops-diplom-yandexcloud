@@ -65,7 +65,7 @@ data "yandex_compute_image" "ubuntu" {
 }
 
 #data "yandex_compute_image" "ubuntu" {
-#  family = "ubuntu-2004-lts"  # <- похоже для РФ отключили репы 
+#  family = "ubuntu-2004-lts"  # <- похоже для РФ отключили репы или вообще отключили их
 #}
 
 # Мастер-узел
