@@ -1,4 +1,3 @@
-# nginx-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,7 +17,7 @@ spec:
     spec:
       containers:
         - name: kuliaev-diplom-nginx
-          image:  mkuliaev/my-nginx-app:latest
+          image:  mkuliaev/my-nginx-app:v.0.1.7
           resources:
              requests:
                 cpu: "1"
