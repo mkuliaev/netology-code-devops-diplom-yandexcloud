@@ -146,6 +146,8 @@
 _______________________________________________________________________________________________________________________
 
 Булат Замилов, Кирилл Касаткин здравствуйте!
-Задание сдела, но ксожалению не хватает времени оформить задание красиво. Прошу еще один.
+Задание сдела, но ксожалению не хватает времени оформить задание. Прошу еще пару дней.
 
-![11-04-01](https://github.com/mkuliaev/clopro-homeworks/blob/main/15.2/png/15.2_png_final_360p.gif)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_360p.gif)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_12-10-51.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/old_9%2003-07-38_360p.gif)
