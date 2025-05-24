@@ -151,3 +151,4 @@ ________________________________________________________________________________
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_360p.gif)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_12-10-51.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/old_9%2003-07-38_360p.gif)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_12-10-51.png)
