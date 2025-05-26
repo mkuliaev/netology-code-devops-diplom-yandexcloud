@@ -450,7 +450,7 @@ sudo apt-get install helm
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
-Создаем файл values.yaml
+Создаем файл с настройками - values.yaml
 
 
 
