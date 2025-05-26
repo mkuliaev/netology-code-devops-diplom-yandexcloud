@@ -527,9 +527,69 @@ EXPOSE 80
 
 Пока всё хорошо!
 
-Теперь идем на наш кластер и запустим там наше приложение! После, проверяем доступность графаны и нашей странички!
+Теперь идем на наш кластер и запустим там наше приложение! После, проверяем доступность графаны и нашей странички по 80 порту!
 
+Создаём namespace kuliaev-diplom (чтоб было всё по красоте!)
+ ```bash
+kubectl create namespace kuliaev-diplom
+ ```
+Создаём деплоймент и сервис к ниму
 
+ ```bash
+ubuntu@kuliaev-master:~$ cat app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuliaev-diplom.ru
+  namespace: kuliaev-diplom
+  labels:
+    app: web-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+        - name: kuliaev-diplom-nginx
+          image:  mkuliaev/my-nginx-app:latest
+          resources:
+             requests:
+                cpu: "1"
+                memory: "200Mi"
+             limits:
+                cpu: "2"
+                memory: "800Mi"
+          ports:
+            - containerPort: 80
+ubuntu@kuliaev-master:~$ cat app-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kuliaev-diplom-service
+  namespace: kuliaev-diplom
+spec:
+  type: NodePort
+  selector:
+    app: web-app
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30081
+ubuntu@kuliaev-master:~$ 
+
+```
+
+Теперь запускаем
+
+ ```bash
+kubectl apply -f app-deployment.yaml 
+kubectl apply -f app-service.yaml
+```
 
 
 
