@@ -329,7 +329,7 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
 }
 ```
 
-Всё тоже самое, только у NodePort порт 30081 и нет наворотов с самодиагностикой, балонсировщик "mkuliaev-web-app-nlb"
+Всё тоже самое, только у NodePort порт 30081 и нет наворотов с самодиагностикой, балансировщик "mkuliaev-web-app-nlb"
 
 ```yaml
 resource "yandex_lb_network_load_balancer" "web_app_lb" {
@@ -525,9 +525,15 @@ EXPOSE 80
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/docker_hub_dowl.png)
 
-Отлично!
+Пока всё хорошо!
 
-Теперь идем на наш кластер и запустим там наше приложение! После проверим доступность графаны и нашей странички!
+Теперь идем на наш кластер и запустим там наше приложение! После, проверяем доступность графаны и нашей странички!
+
+
+
+
+
+
 
 
 
