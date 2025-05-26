@@ -264,7 +264,7 @@ resource "yandex_vpc_address" "web_app_ip" {
 }
 ```
 
-Прило время для Целевых групп
+Пришло время для Целевых групп
 ```yaml
 # ЦГ для Grafana (воркеры 1 и 2)
 resource "yandex_lb_target_group" "grafana_workers" {
@@ -296,7 +296,37 @@ resource "yandex_lb_target_group" "web_workers" {
 }
 ```
 
+Теперь самое главное ))) Настройка балансировщиков!
 
+
+```sql
+resource "yandex_lb_network_load_balancer" "grafana_lb" {
+  name = "mkuliaev-grafana-nlb"
+
+  listener {
+    name        = "grafana-listener"
+    port        = 80        # внешний — 80
+    target_port = 30080     # NodePort Grafana
+
+    external_address_spec {
+      address    = yandex_vpc_address.grafana_ip.external_ipv4_address[0].address
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.grafana_workers.id
+
+    healthcheck {
+      name = "grafana-hc"
+      http_options {
+        port = 30080
+        path = "/api/health"
+      }
+    }
+  }
+}
+```
 
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
