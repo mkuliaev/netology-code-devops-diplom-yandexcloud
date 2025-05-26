@@ -506,7 +506,8 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/html_360p.gif)
 Отлично -Работает! (подтормаживания при видеозахвате-так работает всё плавно)
 
-Готовим докерфайл
+Готовим Dockerfile
+
  ```bash  
 FROM nginx:1.23.1
 
@@ -519,7 +520,7 @@ EXPOSE 80
 Тепрь собираем образы и отпвляем на докерхаб с тегами
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/bild_docker_1-00-46.png)
 
-проверяем докерхаб
+Проверяем докерхаб
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/docker_hub_dowl.png)
 
@@ -665,7 +666,7 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: "v1.28.5"  # Фиксируем версию
+          version: "v1.28.5"  
 
       - name: Configure kubeconfig (insecure)
         run: |
