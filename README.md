@@ -433,7 +433,48 @@ calico_rr
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/cluster_work.png)
 Гифачка
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/kube_install.gif)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/getnod.png)
+Вроде готово!
+
+Ставим Helm
+
+ ```bash  
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+```
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+values.yaml 
+
+grafana:
+  nodeSelector:
+    app: grafana
+  service:
+    type: NodePort
+    port: 3000
+    targetPort: 3000
+    nodePort: 30080 
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+
+kubectl label nodes kuliaev-worker-1 app=grafana
+kubectl label nodes kuliaev-worker-2 app=grafana
+
+helm upgrade prometheus prometheus-community/kube-prometheus-stack -f values.yaml
+
+ubuntu@kuliaev-master:~/kubespray$ kubectl get pods -l app.kubernetes.io/name=grafana -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE   IP             NODE               NOMINATED NODE   READINESS GATES
+prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.102.4   kuliaev-worker-2   <none>           <none>
+ubuntu@kuliaev-master:~/kubespray$ 
 
 
 
