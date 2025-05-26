@@ -281,7 +281,7 @@ resource "yandex_lb_target_group" "grafana_workers" {
 ```
 и
 
-```yaml
+```bash
 # ЦГ для Web App (воркеры 3 и 4)
 resource "yandex_lb_target_group" "web_workers" {
   name = "mkuliaev-web-workers-tg"
