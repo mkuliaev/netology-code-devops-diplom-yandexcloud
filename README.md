@@ -583,7 +583,7 @@ spec:
 ubuntu@kuliaev-master:~$ 
 
 ```
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/depl_serv_deplo.png)
 
 
 Теперь запускаем
