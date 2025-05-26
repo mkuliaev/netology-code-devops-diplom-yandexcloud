@@ -523,7 +523,13 @@ EXPOSE 80
 
 проверяем докерхаб
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/docker_hub_dowl.png)
+
+Отлично!
+
+Теперь идем на наш кластер и запустим там наше приложение! После проверим доступность графаны и нашей странички!
+
+
 
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
