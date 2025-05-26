@@ -485,7 +485,7 @@ kubectl label nodes kuliaev-worker-2 app=grafana
  ```bash  
 helm upgrade prometheus prometheus-community/kube-prometheus-stack -f values.yaml
 ```
-Прверяем
+Проверяем
 
  ```bash  
 ubuntu@kuliaev-master:~/kubespray$ kubectl get pods -l app.kubernetes.io/name=grafana -o wide
