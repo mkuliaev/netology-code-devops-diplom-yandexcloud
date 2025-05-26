@@ -446,11 +446,15 @@ sudo apt-get update
 sudo apt-get install helm
 ```
 
+ ```bash  
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
+```
+Создайте файл values.yaml
 
-values.yaml 
 
+
+ ```bash 
 grafana:
   nodeSelector:
     app: grafana
@@ -464,17 +468,32 @@ prometheus:
   prometheusSpec:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
+```
+Устанавливаем с настройками выше 
+ ```bash 
+helm install prometheus prometheus-community/kube-prometheus-stack -f values.yaml
+```
 
+Помечаем воркеры 
 
+ ```bash  
 kubectl label nodes kuliaev-worker-1 app=grafana
 kubectl label nodes kuliaev-worker-2 app=grafana
+```
+Обновляем
 
+ ```bash  
 helm upgrade prometheus prometheus-community/kube-prometheus-stack -f values.yaml
+```
+Прверяем
 
+ ```bash  
 ubuntu@kuliaev-master:~/kubespray$ kubectl get pods -l app.kubernetes.io/name=grafana -o wide
 NAME                                  READY   STATUS    RESTARTS   AGE   IP             NODE               NOMINATED NODE   READINESS GATES
 prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.102.4   kuliaev-worker-2   <none>           <none>
-ubuntu@kuliaev-master:~/kubespray$ 
+```
+
+
 
 
 
