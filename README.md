@@ -212,7 +212,7 @@ resource "yandex_vpc_subnet" "subnet_d" {
 }
 ```
 
-Дистрибутив беру ubuntu-2204 (с 2004 - слишком много проблем с репами ! изначально разворачивал на ней)
+Дистрибутив беру ubuntu-2204 (с 2004 - слишком много проблем с репами ! разворачивал на ней)
 ```yaml
 data "yandex_compute_image" "ubuntu" {
   family = "ubuntu-2204-lts"
@@ -500,7 +500,6 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 
 Теперь приложение
 
-https://github.com/mkuliaev/my_app
 
 [Вэб страничка с Гифкой (my_app)](https://github.com/mkuliaev/my_app/)
 
