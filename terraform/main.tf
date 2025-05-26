@@ -174,6 +174,7 @@ resource "yandex_lb_target_group" "web_workers" {
     }
   }
 }
+
 #  балансировщики разные целевые группы
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
   name = "mkuliaev-grafana-nlb"

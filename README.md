@@ -245,6 +245,60 @@ resource "yandex_compute_instance" "worker" {
 }
 ```
 
+Теперь создаём IP адреса для наших балансировщиков
+
+```yaml
+# Создаем статические IP-адреса
+resource "yandex_vpc_address" "grafana_ip" {
+  name = "grafana-lb-ip"
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
+}
+
+resource "yandex_vpc_address" "web_app_ip" {
+  name = "web-app-lb-ip"
+  external_ipv4_address {
+    zone_id = "ru-central1-a"
+  }
+}
+```
+
+Прило время для Целевых групп
+```yaml
+# ЦГ для Grafana (воркеры 1 и 2)
+resource "yandex_lb_target_group" "grafana_workers" {
+  name = "mkuliaev-grafana-workers-tg"
+
+  dynamic "target" {
+    for_each = slice(yandex_compute_instance.worker, 0, 2) # Берем первые 2 воркера
+    content {
+      subnet_id = target.value.network_interface[0].subnet_id
+      address   = target.value.network_interface[0].ip_address
+    }
+  }
+}
+```
+и
+
+```yaml
+# ЦГ для Web App (воркеры 3 и 4)
+resource "yandex_lb_target_group" "web_workers" {
+  name = "mkuliaev-web-workers-tg"
+
+  dynamic "target" {
+    for_each = slice(yandex_compute_instance.worker, 2, 4) # Берем последние 2 воркера
+    content {
+      subnet_id = target.value.network_interface[0].subnet_id
+      address   = target.value.network_interface[0].ip_address
+    }
+  }
+}
+```
+
+
+
+
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
 
 
