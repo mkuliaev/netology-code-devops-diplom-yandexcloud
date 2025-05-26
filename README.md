@@ -505,6 +505,24 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/app_rtee.png)
 
 Запускаем и проверяем локально
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/html_360p.gif)
+Отлично -Работает! (подтормаживания при видеозахвате-так работает всё плавно)
+
+Готовим докерфайл
+ ```bash  
+FROM nginx:1.23.1
+
+COPY static /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+```
+
+Тепрь собираем образы и отпвляем на докерхаб с тегами
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/bild_docker_1-00-46.png)
+
+проверяем докерхаб
+
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
 
 
