@@ -492,7 +492,9 @@ ubuntu@kuliaev-master:~/kubespray$ kubectl get pods -l app.kubernetes.io/name=gr
 NAME                                  READY   STATUS    RESTARTS   AGE   IP             NODE               NOMINATED NODE   READINESS GATES
 prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.102.4   kuliaev-worker-2   <none>           <none>
 ```
+Проверяем доступность на  mkuliaev-grafana-nlb - 158.160.63.208  по 80 порту
 
+![11-04-01](https://https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_1.png)
 
 Ставим приложение
 
