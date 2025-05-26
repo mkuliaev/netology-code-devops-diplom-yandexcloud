@@ -524,3 +524,8 @@ https://github.com/mkuliaev/my_app.git
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/workfl.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/deploy_my_app.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/deploy_360p.gif)
+
+
+https://github.com/mkuliaev/my_app/blob/main/.github/workflows/docker-image.yml
+
+https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/.github/workflows/terraform.yml
