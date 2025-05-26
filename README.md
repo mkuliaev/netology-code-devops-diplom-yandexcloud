@@ -329,7 +329,7 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
 }
 ```
 
-Для приложения всё тоже самое, только у NodePort порт 30081 и нет наворотов с самодиагностикой, ну и балонсировщик "mkuliaev-web-app-nlb"
+Всё тоже самое, только у NodePort порт 30081 и нет наворотов с самодиагностикой, балонсировщик "mkuliaev-web-app-nlb"
 
 ```yaml
 resource "yandex_lb_network_load_balancer" "web_app_lb" {
@@ -360,11 +360,15 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
 }
 ```
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
+Теперь применяем   
+
+terraform apply
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/terraform_install.gif)
+
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/terr_apply.png)
 
 
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/netw.png)
 
 
 
