@@ -603,7 +603,7 @@ kubectl apply -f app-service.yaml
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
 Всё работает!
 ---
-Вот тут кстати старый вариант нуже.
+Вот тут кстати старый вариант ниже - через  NodePort 30085 .
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/old_9%2003-07-38_360p.gif)
 ---
