@@ -615,7 +615,100 @@ kubectl apply -f app-service.yaml
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/rep_secret.png)
 
+переходим в my_app/.github/workflows. 
+и создаём docker-image.yml
 
+ ```bash
+name: Docker Build and Deploy
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: mkuliaev/my-nginx-app
+  K8S_NAMESPACE: kuliaev-diplom
+  DEPLOYMENT_NAME: nginx-app
+  CONTAINER_NAME: nginx
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          push: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+  deploy:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: "v1.28.5"  # Фиксируем версию
+
+      - name: Configure kubeconfig (insecure)
+        run: |
+          mkdir -p ~/.kube
+          cat <<EOF > ~/.kube/config
+          apiVersion: v1
+          clusters:
+          - cluster:
+              insecure-skip-tls-verify: true
+              server: https://158.160.164.140:6443 
+            name: insecure-cluster
+          contexts:
+          - context:
+              cluster: insecure-cluster
+              user: ci-admin
+            name: insecure-context
+          current-context: insecure-context
+          kind: Config
+          users:
+          - name: ci-admin
+            user:
+              token: "${{ secrets.K8S_ADMIN_TOKEN }}"
+          EOF
+          chmod 600 ~/.kube/config
+
+      - name: Verify cluster access
+        run: |
+          kubectl version
+          kubectl get nodes
+          kubectl -n kuliaev-diplom get deploy
+
+      - name: Update deployment image
+        run: |
+          kubectl -n kuliaev-diplom set image deploy/kuliaev-diplom.ru \
+            kuliaev-diplom-nginx=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+
+      - name: Verify deployment
+        run: |
+          kubectl -n kuliaev-diplom rollout status deploy/kuliaev-diplom.ru --timeout=180s
+          kubectl -n kuliaev-diplom get pods
+```
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/web_brow_app.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_brouw.png)
