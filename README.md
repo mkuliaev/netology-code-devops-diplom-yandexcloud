@@ -608,6 +608,14 @@ kubectl apply -f app-service.yaml
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/old_9%2003-07-38_360p.gif)
 ---
 
+Пришло время CI/CD
+Отправляемся к репе [Вэб страничка с Гифкой (my_app)](https://github.com/mkuliaev/my_app/) 
+
+Тут сразу настраиваем секреты DOCKER_USERNAME DOCKER_PASSWORD KUBE_CONFIG и K8S_ADMIN_TOKEN
+
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/rep_secret.png)
+
+
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/web_brow_app.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_brouw.png)
