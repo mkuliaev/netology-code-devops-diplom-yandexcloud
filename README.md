@@ -376,8 +376,9 @@ terraform apply
 
 Вроде всё норм
 
-Берем из вывода master_public_ip = "158.160.164.140" и подключаемся к будущей мастерноде
-Заходим на неё и обновляемся и устанавливаемя ))
+Берем из вывода master_public_ip = "158.160.164.140" и подключаемся к будущей мастерноде.
+
+Заходим на неё и начинаем обновлятсяи устанавливатся ))
 
 ```yaml
 ssh -A ubuntu@158.160.164.140
@@ -397,7 +398,8 @@ CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inv
 nano inventory/mycluster/inventory.ini
 ```
 nano inventory/mycluster/inventory.ini  
-оформлено помолодежному )))
+"Оформлено по молодежному" )))
+
  ```yaml                                                                           
 [all]
 kuliaev-master   ansible_host=158.160.164.140   ip=10.0.2.16  # Мастер
@@ -426,6 +428,7 @@ kube_node
 calico_rr
 ```
 
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
 
 
 
