@@ -496,8 +496,13 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_1.png)
 
-Ставим приложение
 
+
+Тепрь приложение
+
+https://github.com/mkuliaev/my_app
+
+https://github.com/mkuliaev/my_app.git
 
 
 
