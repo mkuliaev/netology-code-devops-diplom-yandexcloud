@@ -367,6 +367,21 @@ terraform apply
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/terr_apply.png)
 
+Проверяем, что насоздавали ))))
+
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dashbor.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/netw.png)
+![11-04-01](hhttps://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/groups_c.png)
+
+
+
+
+
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
+
 
 
 
