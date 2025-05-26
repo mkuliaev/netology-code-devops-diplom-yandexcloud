@@ -498,7 +498,7 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 
 
 
-Тепрь приложение
+Теперь приложение
 
 https://github.com/mkuliaev/my_app
 
