@@ -353,6 +353,7 @@ resource "yandex_lb_network_load_balancer" "web_app_lb" {
   }
 }
 ```
+[Мой Terraform код](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/tree/main/terraform)
 
 Теперь применяем   
 
