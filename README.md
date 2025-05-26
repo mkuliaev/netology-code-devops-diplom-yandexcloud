@@ -166,14 +166,34 @@ ________________________________________________________________________________
 
 -------------------
 
+Подготавливаем  облачную инфраструктуру в ЯО при помощи [Terraform](https://www.terraform.io/).
+```yaml
+# Создаем сервисный аккаунта kuliaev-diplom
+resource "yandex_iam_service_account" "kuliaev_diplom" {
+  name        = "kuliaev-diplom"
+  description = "Service account for diploma project"
+}
+
+# Назначение роли storage.editor (переделал на "storage.admin")
+resource "yandex_resourcemanager_folder_iam_binding" "storage_admin" {
+  folder_id = var.yc_folder_id
+  role      = "storage.admin"
+  members = [
+    "serviceAccount:${yandex_iam_service_account.kuliaev_diplom.id}"
+  ]
+}
+```
+![11-04-01](https://g)
+
+потом создаем S3 бакета и грузим туда файл! 
+пусть будет картинка с зайцем БО!
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/terraform/bucket/image.jpg)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/backet.png)
 
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/terr_apply.png)
 
 
 
-
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dashbor.png)
 
 
 
