@@ -400,7 +400,7 @@ nano inventory/mycluster/inventory.ini
 nano inventory/mycluster/inventory.ini  
 "Оформлено по молодежному" )))
 
- ```yaml                                                                           
+ ```bash                                                                           
 [all]
 kuliaev-master   ansible_host=158.160.164.140   ip=10.0.2.16  # Мастер
 kuliaev-worker-1 ansible_host=51.250.70.253     ip=10.0.0.23  # Воркер 1
@@ -428,8 +428,11 @@ kube_node
 calico_rr
 ```
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
-
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/inventory.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/myclaster-install.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/cluster_work.png)
+Гифачка
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/kube_install.gif)
 
 
 
