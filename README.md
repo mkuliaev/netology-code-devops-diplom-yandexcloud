@@ -378,7 +378,7 @@ terraform apply
 
 Берем из вывода master_public_ip = "158.160.164.140" и подключаемся к будущей мастерноде.
 
-Заходим на неё и начинаем обновлятсяи устанавливатся ))
+Заходим на неё и начинаем обновлятся да устанавливатся ))
 
 ```yaml
 ssh -A ubuntu@158.160.164.140
@@ -494,7 +494,7 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 ```
 Проверяем доступность на  mkuliaev-grafana-nlb - 158.160.63.208  по 80 порту
 
-![11-04-01](https://https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_1.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_1.png)
 
 Ставим приложение
 
