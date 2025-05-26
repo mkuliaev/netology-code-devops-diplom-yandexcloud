@@ -501,7 +501,8 @@ prometheus-grafana-659c5875cf-cfzth   3/3     Running   0          12h   10.233.
 Теперь приложение
 
 
-[Вэб страничка с Гифкой (my_app)](https://github.com/mkuliaev/my_app/)
+[Вэб страничка с Гифкой (my_app)](https://github.com/mkuliaev/my_app/)  <- жми
+
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/app_rtee.png)
 
 Запускаем и проверяем локально
@@ -593,16 +594,19 @@ kubectl apply -f app-deployment.yaml
 kubectl apply -f app-service.yaml
 ```
 
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/namespase_11.png)
 
+Всё появилось! 
 
-
-
-
-
+Заглянем на наши балансировщики!
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_360p.gif)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/old_9%2003-07-38_360p.gif)
+Всё работает!
+---
+Вот тут кстати старый вариант нуже.
 
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/old_9%2003-07-38_360p.gif)
+---
 
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/web_brow_app.png)
