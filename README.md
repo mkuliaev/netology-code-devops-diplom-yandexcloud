@@ -148,20 +148,6 @@ ________________________________________________________________________________
 Булат Замилов, Кирилл Касаткин здравствуйте!
 Задание сдела, но ксожалению не хватает времени оформить задание. Прошу еще пару дней.
 
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_360p.gif)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_12-10-51.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/old_9%2003-07-38_360p.gif)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/cloud_mkuliaev.png)
-
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_17-21-56.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dow_17-19-35.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/dowl_112-14-05.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/bild_docker_1-00-46.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png/docker_hub_dowl.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/new_png/terr_58.webm)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/new_png/dowl_depl.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/new_png/dowl_dwpl2.png)
-
 
 
 -------------------
