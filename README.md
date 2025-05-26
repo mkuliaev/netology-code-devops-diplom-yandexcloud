@@ -199,7 +199,7 @@ resource "yandex_vpc_network" "network" {
 }
 ```
 
-в каждой зоне по своей подсети и будем использовать  
+в каждой зоне своя подсеть
 ```yaml
 # Подсеть в зоне ru-central1-a
 resource "yandex_vpc_subnet" "subnet_a" {
