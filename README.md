@@ -298,7 +298,8 @@ resource "yandex_lb_target_group" "web_workers" {
 
 Теперь самое главное ))) Настройка балансировщиков!
 
-
+Тут пробрасываем 30080 NodePort графаны на 80 порт балансировщика "mkuliaev-grafana-nlb" и  не забываем про  "/api/health" для самодиагностики.
+ 
 ```sql
 resource "yandex_lb_network_load_balancer" "grafana_lb" {
   name = "mkuliaev-grafana-nlb"
@@ -328,6 +329,36 @@ resource "yandex_lb_network_load_balancer" "grafana_lb" {
 }
 ```
 
+Для приложения всё тоже самое, только у NodePort порт 30081 и нет наворотов с самодиагностикой, ну и балонсировщик "mkuliaev-web-app-nlb"
+
+```yaml
+resource "yandex_lb_network_load_balancer" "web_app_lb" {
+  name = "mkuliaev-web-app-nlb"
+
+  listener {
+    name        = "web-app-listener"
+    port        = 80        
+    target_port = 30081    
+
+    external_address_spec {
+      address    = yandex_vpc_address.web_app_ip.external_ipv4_address[0].address
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.web_workers.id
+
+    healthcheck {
+      name = "web-app-hc"
+      http_options {
+        port = 30081
+        path = "/"
+      }
+    }
+  }
+}
+```
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
 
