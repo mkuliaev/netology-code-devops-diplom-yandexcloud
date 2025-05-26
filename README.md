@@ -431,7 +431,7 @@ calico_rr
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/inventory.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/myclaster-install.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/cluster_work.png)
-Гифачка
+Гифочка
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/kube_install.gif)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/getnod.png)
 Вроде готово!
@@ -450,7 +450,7 @@ sudo apt-get install helm
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
-Создайте файл values.yaml
+Создаем файл values.yaml
 
 
 
