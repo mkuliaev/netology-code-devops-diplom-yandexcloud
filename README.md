@@ -369,11 +369,11 @@ terraform apply
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/netw.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/groups_c.png)
 
-Вроде всё норм
+Вроде всё нормально
 
 Берем из вывода master_public_ip = "158.160.164.140" и подключаемся к будущей мастерноде.
 
-Заходим на неё и начинаем обновлятся да устанавливатся ))
+Заходим на мастер ноду и начинаем подготовку к установке Kubernetes-кластера  и саму установку с помощью Kubespray.
 
 ```yaml
 ssh -A ubuntu@158.160.164.140
