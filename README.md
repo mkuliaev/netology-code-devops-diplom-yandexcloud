@@ -374,8 +374,28 @@ terraform apply
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/netw.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/groups_c.png)
 
+Вроде всё норм
 
+Берем из вывода master_public_ip = "158.160.164.140" и подключаемся к будущей мастерноде
+Заходим на неё и обновляемся и устанавливаемя ))
 
+```yaml
+ssh -A ubuntu@158.160.164.140
+sudo apt-get update && sudo apt-get install -y python3-pip git
+pip3 install --user ansible==8.5.0
+sudo  apt install python3.10-venv
+python3 -m venv .venv
+source .venv/bin/activate
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd kubespray
+git checkout v2.25.0
+pip3 install -r requirements.txt
+cp -rfp inventory/sample inventory/mycluster
+declare -a IPS=(158.160.164.140 51.250.70.253 89.169.163.63 89.169.170.198 130.193.52.15)
+pip3 install ruamel.yaml
+CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+nano inventory/mycluster/inventory.ini
+```
 
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
