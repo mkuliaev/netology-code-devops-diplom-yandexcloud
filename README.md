@@ -191,11 +191,72 @@ resource "yandex_resourcemanager_folder_iam_binding" "storage_admin" {
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/backet.png)
 
 
+Теперь 
+```yaml
+# Создание VPC сети
+resource "yandex_vpc_network" "network" {
+  name = "mkuliaev-network"                   
+}
+```
 
+в каждой зоне по своей подсети и будем использовать  
+```yaml
+# Подсеть в зоне ru-central1-a
+resource "yandex_vpc_subnet" "subnet_a" {
+  name           = "subnet-a"
+  zone           = "ru-central1-a"
+  network_id     = yandex_vpc_network.network.id
+  v4_cidr_blocks = ["10.0.0.0/24"]
+}
 
+# Подсеть в зоне ru-central1-b
+resource "yandex_vpc_subnet" "subnet_b" {
+  name           = "subnet-b"
+  zone           = "ru-central1-b"
+  network_id     = yandex_vpc_network.network.id
+  v4_cidr_blocks = ["10.0.1.0/24"]
+}
 
+# Подсеть в зоне ru-central1-d
+resource "yandex_vpc_subnet" "subnet_d" {
+  name           = "subnet-d"
+  zone           = "ru-central1-d"
+  network_id     = yandex_vpc_network.network.id
+  v4_cidr_blocks = ["10.0.2.0/24"]
+}
+```
 
+Дистрибутив беру ubuntu-2204 (с 2004 - слишком много проблем с репами ! изначально разварачивал на ней)
+```yaml
+data "yandex_compute_image" "ubuntu" {
+  family = "ubuntu-2204-lts"
+}
+```
 
+Теперь пришло время разобратся с нодами
+Изначально было 3 ноды (1 мастер и 2 воркета)! Пока пробрасывал на хостовую машины с помощью NodePort приложение и графану - было вроде нормально, 
+но когда стал перекидывать на балансировщик возникли проблемы из-за того, что группа была либо на одном балансировщике, либо на другом!
+Сейчас подготовил  1 мастера и 4 воркера, и разделил их сразу по группам!
+```yaml
+# Мастер-узел
+resource "yandex_compute_instance" "master" {
+  name        = "mkuliaev-master"
+  zone        = "ru-central1-d"  # Мастер в зоне d 
+  platform_id = "standard-v2"    # <- сволоч
+}
+```
+
+и 
+
+```yaml
+# Воркеры
+resource "yandex_compute_instance" "worker" {
+  count       = 4
+  name        = "mkuliaev-worker-${count.index + 1}"
+  platform_id = "standard-v2"
+  zone        = count.index == 0 ? "ru-central1-a" : "ru-central1-b" 
+}
+```
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/vm.png)
 
