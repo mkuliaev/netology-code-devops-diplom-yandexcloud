@@ -396,6 +396,40 @@ pip3 install ruamel.yaml
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 nano inventory/mycluster/inventory.ini
 ```
+nano inventory/mycluster/inventory.ini  
+оформлено помолодежному )))
+ ```yaml                                                                           
+[all]
+kuliaev-master   ansible_host=158.160.164.140   ip=10.0.2.16  # Мастер
+kuliaev-worker-1 ansible_host=51.250.70.253     ip=10.0.0.23  # Воркер 1
+kuliaev-worker-2 ansible_host=89.169.163.63     ip=10.0.1.10  # Воркер 2
+kuliaev-worker-3 ansible_host=89.169.170.198    ip=10.0.1.5   # Воркер 3
+kuliaev-worker-4 ansible_host=130.193.52.15     ip=10.0.1.3   # Воркер 4
+
+[kube_control_plane]
+kuliaev-master
+
+[etcd]
+kuliaev-master
+
+[kube_node]
+kuliaev-worker-1
+kuliaev-worker-2
+kuliaev-worker-3
+kuliaev-worker-4
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr
+```
+
+
+
+
+
 
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/nl_balans.png)
