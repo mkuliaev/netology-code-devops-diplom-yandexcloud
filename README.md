@@ -727,6 +727,7 @@ jobs:
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dockerhub_v4.9.png)
 Хорошо
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_brouw.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/deploy_360p.gif)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/v0.4.9_360p.gif)
 
 Вроде всё получилось!
@@ -734,3 +735,5 @@ jobs:
 https://github.com/mkuliaev/my_app/blob/main/.github/workflows/docker-image.yml
 
 https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/.github/workflows/terraform.yml
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dowl_112-14-05.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dow_17-19-35.png)
