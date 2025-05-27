@@ -430,7 +430,7 @@ calico_rr
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/kube_install.gif)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/getnod.png)
 Вроде готово!
-[Мой kubespray](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/tree/main/terraform)
+[Мой kubespray](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/tree/main/kubespray)
 
 
 Ставим Helm
