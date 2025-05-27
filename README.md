@@ -728,9 +728,9 @@ jobs:
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dockerhub_v4.9.png)
 Хорошо
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_brouw.png)
-
-Гифока
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/app_0.4.9.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/k8s_0.4.9.png)
+Гифочка
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/v0.4.9_360p.gif)
 
 Вроде всё получилось!
