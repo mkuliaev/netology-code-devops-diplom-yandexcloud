@@ -720,6 +720,7 @@ jobs:
 
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/final1.png)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/final2.png)
+![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/deploy_360p.gif)
 
 Заходим на докерхаб и смотрим там, что да как!
 [DockerHUB mkuliaev/my-nginx-app](https://hub.docker.com/repository/docker/mkuliaev/my-nginx-app/tags) 
@@ -727,7 +728,7 @@ jobs:
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/dockerhub_v4.9.png)
 Хорошо
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/grafana_brouw.png)
-![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/deploy_360p.gif)
+
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/v0.4.9_360p.gif)
 
 Вроде всё получилось!
