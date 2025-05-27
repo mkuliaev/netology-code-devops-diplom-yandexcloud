@@ -430,6 +430,8 @@ calico_rr
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/kube_install.gif)
 ![11-04-01](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/blob/main/png_diplom/getnod.png)
 Вроде готово!
+[Мой kubespray](https://github.com/mkuliaev/netology-code-devops-diplom-yandexcloud/tree/main/terraform)
+
 
 Ставим Helm
 
@@ -440,13 +442,13 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.
 sudo apt-get update
 sudo apt-get install helm
 ```
+Добавляем репозиторий
 
  ```bash  
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
 Создаем файл с настройками - values.yaml
-
 
 
  ```bash 
