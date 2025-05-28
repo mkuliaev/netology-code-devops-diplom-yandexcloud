@@ -388,7 +388,6 @@ git checkout v2.25.0
 pip3 install -r requirements.txt
 cp -rfp inventory/sample inventory/mycluster
 declare -a IPS=(158.160.164.140 51.250.70.253 89.169.163.63 89.169.170.198 130.193.52.15)
-pip3 install ruamel.yaml
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 nano inventory/mycluster/inventory.ini
 ```
